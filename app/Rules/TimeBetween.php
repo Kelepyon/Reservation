@@ -20,7 +20,7 @@ class TimeBetween implements ValidationRule
 
         $earliestTime = Carbon::createFromTimeString('17:00:00');
         $lastTime = Carbon::createFromTimeString('23:00:00');
-        if ($pickupTime->between($earliestTime, $lastTime) ? true : false) {
+        if (!$pickupTime->between($earliestTime, $lastTime)) {
             $fail('Tolong Masukan Waktu Diantara 17:00-23:00.');
         }
     }

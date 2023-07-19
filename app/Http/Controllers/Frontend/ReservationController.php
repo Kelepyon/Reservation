@@ -54,6 +54,7 @@ class ReservationController extends Controller
         $tables = Table::where('status', TableStatus::Available)
             ->where('guest_number', '>=', $reservation->guest_number)
             ->whereNotIn('id', $res_table_ids)->get();
+
         return view('reservation.step-two', compact('reservation', 'tables'));
     }
 
@@ -62,6 +63,11 @@ class ReservationController extends Controller
         $validated = $request->validate([
             'table_id' => ['required']
         ]);
+        $table = Table::findOrFail($request->table_id);
+        $table->update([
+            'status' => 'unavailable'
+        ]);
+
         $reservation = $request->session()->get('reservation');
         $reservation->fill($validated);
         $reservation->save();
